@@ -13,7 +13,7 @@ namespace Entities
             People.Persist(ToRepository());
         }
 
-        private Repositories.Person ToRepository()
+        protected virtual Repositories.Person ToRepository()
         {
             return new Repositories.Person
             {

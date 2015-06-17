@@ -1,24 +1,31 @@
-﻿namespace Entities
+﻿using System;
+
+namespace Entities
 {
     public class User : Person
     {
-        public string UserName { get; set; }
-        public string Password { get; set; }
+        private string UserName { get; set; }
+        private string Password { get; set; }
 
         public virtual void Register()
         {
             Persist();
         }
 
-        private Repositories.User ToRepository()
+        protected override Repositories.Person ToRepository()
         {
             return new Repositories.User
             {
                 Id = Id,
                 FirstName = FirstName,
                 UserName = UserName,
-                Password = Password,
+                Password = Password
             };
+        }
+
+        public void Login()
+        {
+            throw new NotImplementedException();
         }
     }
 }
