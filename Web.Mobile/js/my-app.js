@@ -1,3 +1,6 @@
+var applicationId = "C7xD9l2BrBM4y8n4H2kMSHlipUTkKu4v5JeoWnLG";
+var restApiKey = "epEUYTX3LBpapTgTXF7xcBLZHB5wIaUCcZj0QMcp";
+
 // Initialize your app
 var myApp = new Framework7();
 
