@@ -43,26 +43,16 @@
         //postdata.email = email;
         postdata.firstName = firstName;
 
-        //myApp.showIndicator();
-        myApp.showPreloader();
-
-        // Using Ajax for communication with Parse backend
-        // Note mandatory headers with credentials required
-        // by Parse. HTTP communication responses are handled
-        // based on HTTP response codes
-        $$.ajax({
-            url: query,
-            headers: { "X-Parse-Application-Id": applicationId, "X-Parse-REST-API-Key": restApiKey },
-            type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify(postdata),
-
-            statusCode: {
-                201: success201,
-                400: notsuccess,
-                500: notsuccess
+        var parse = myApp.parse();
+        myApp.showPreloader("Cargando Pacientes...");
+        parse.persistPatient({
+            data: postdata,
+            success: function (data, textStatus) {
+                myApp.hidePreloader();
+                console.log(data, textStatus);
             }
         });
+
 
     });
     //$$("form.ajax-submit").on("submitted", function(e) {
