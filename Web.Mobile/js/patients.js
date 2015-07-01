@@ -1,104 +1,75 @@
 ﻿myApp.onPageInit("patients", function(page) {
-    function init() {
+
+    var virtualList;
+    var backend = myApp.backend();
+
+    function patientsToItems(patients) {
         var items = [];
-        myApp.parse().getPatients().forEach(function(patient) {
+        patients.forEach(function(patient) {
             items.push({
+                id: patient.objectId,
                 title: patient.name + " " + patient.surname,
                 subtitle: "",
             });
         });
-        myApp.virtualList($$(page.container).find(".virtual-list"), {
-            items: items,
-            searchAll: function(query, items) {
-                var found = [];
-                for (var i = 0; i < items.length; i++) {
-                    if (items[i].title.indexOf(query) >= 0 || query.trim() === "")
-                        found.push(i);
-                }
-                return found;
+        return items;
+    }
+
+    virtualList = myApp.virtualList($$(page.container).find(".virtual-list"), {
+        items: patientsToItems(backend.getPatients()),
+        searchAll: function(query, items) {
+            var found = [];
+            for (var i = 0; i < items.length; i++) {
+                if (items[i].title.indexOf(query) >= 0 || query.trim() === "")
+                    found.push(i);
+            }
+            return found;
+        },
+        template: "<li class=\"swipeout\" data-id=\"{{id}}\">" +
+            "  <div class=\"swipeout-content item-content\">" +
+            "    <div class=\"item-media\">...</div>" +
+            "    <div class=\"item-inner\">" +
+            "      <div class=\"item-title\">{{title}}</div>" +
+            "      <div class=\"item-subtitle\">{{subtitle}}</div>" +
+            "    </div>" +
+            "  </div>" +
+            "  <div class=\"swipeout-actions-right\">" +
+            "    <a href=\"#\" class=\"swipeout-delete\" data-confirm=\"¿Seguro que quieres borrar este paciente?\" data-confirm-title=\"¿Borrar?\">Borrar</a>" +
+            "    </div>" +
+            "  </div>" +
+            "</li>",
+        //height: 63,
+        cache: false,
+    });
+
+    function deleted(e) {
+        backend.deletePatient($$(e.srcElement).attr("data-id"), {
+            success: function(patient) {
+                myApp.alert(patient.attributes.name + " " + patient.attributes.surname + " borrado correctamente");
             },
-            template: "<li>" +
-                "<a href=\"#\" class=\"item-link item-content\">" +
-                "<div class=\"item-inner\">" +
-                "<div class=\"item-title-row\">" +
-                "<div class=\"item-title\">{{title}}</div>" +
-                "</div>" +
-                "<div class=\"item-subtitle\">{{subtitle}}</div>" +
-                "</div>" +
-                "</a>" +
-                "</li>",
-            //height: 63,
+            error: function(patient, error) {
+                console.log(patient, error);
+            }
         });
     }
 
-    //function onError(xhr, textStatus, errorThrown) {
-    //    myApp.hidePreloader();
-    //    myApp.alert("Error");
-    //}
-
-    //function onSuccess(data, textStatus) {
-    //    myApp.hidePreloader();
-    //    data = JSON.parse(data);
-    //    if (!data.results) {
-    //        myApp.alert("Error");
-    //        return;
-    //    }
-    //    var items = [];
-    //    data.results.forEach(function(patient) {
-    //        items.push({
-    //            title: patient.name,
-    //            subtitle: "",
-    //        });
-    //    });
-    //    myApp.virtualList($$(page.container).find(".virtual-list"), {
-    //        items: items,
-    //        searchAll: function(query, items) {
-    //            var found = [];
-    //            for (var i = 0; i < items.length; i++) {
-    //                if (items[i].title.indexOf(query) >= 0 || query.trim() === "")
-    //                    found.push(i);
-    //            }
-    //            return found;
-    //        },
-    //        template: "<li>" + "<a href=\"#\" class=\"item-link item-content\">" + "<div class=\"item-inner\">" + "<div class=\"item-title-row\">" + "<div class=\"item-title\">{{title}}</div>" + "</div>" + "<div class=\"item-subtitle\">{{subtitle}}</div>" + "</div>" + "</a>" + "</li>",
-    //        //height: 63,
-    //    });
-    //}
-    init();
     $$(page.container).find(".pull-to-refresh-content").on("refresh", function(e) {
-        var parse = myApp.parse();
-        myApp.showPreloader("Cargando Pacientes...");
-        parse.retrievePatients({
-            success: function(data, textStatus) {
-                myApp.hidePreloader();
-                console.log(data, textStatus);
-                parse.setPatients(data.results);
-                init();
+        backend.retrievePatients({
+            success: function(results) {
+                console.log(results);
+                backend.setPatients(results);
+                virtualList.replaceAllItems(patientsToItems(backend.getPatients()));
+                virtualList.update();
                 myApp.pullToRefreshDone();
+                $$(page.container).find(".swipeout").on("deleted", deleted);
+            },
+            error: function(error) {
+                console.log(error);
             }
         });
-        //// Emulate 2s loading
-        //setTimeout(function() {
-        //    // Random image
-        //    var picURL = "http://hhhhold.com/88/d/jpg?" + Math.round(Math.random() * 100);
-        //    // Random song
-        //    var song = songs[Math.floor(Math.random() * songs.length)];
-        //    // Random author
-        //    var author = authors[Math.floor(Math.random() * authors.length)];
-        //    // List item html
-        //    var itemHTML = "<li class=\"item-content\">" +
-        //        "<div class=\"item-media\"><img src=\"" + picURL + "\" width=\"44\"/></div>" +
-        //        "<div class=\"item-inner\">" +
-        //        "<div class=\"item-title-row\">" +
-        //        "<div class=\"item-title\">" + song + "</div>" +
-        //        "</div>" +
-        //        "<div class=\"item-subtitle\">" + author + "</div>" +
-        //        "</div>" +
-        //        "</li>";
-        //    // Prepend new list element
-        //    ptrContent.find("ul").prepend(itemHTML);
-        //    // When loading done, we need to reset it
-        //    myApp.pullToRefreshDone();
-        //}, 2000);
+    });
+
+    $$(page.container).find(".swipeout").on("deleted", function(e) {
+        deleted(e);
     });
 });

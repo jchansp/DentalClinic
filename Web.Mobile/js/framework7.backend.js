@@ -1,12 +1,10 @@
-Framework7.prototype.plugins.parse = function(app) {
+Framework7.prototype.plugins.backend = function(app) {
     "use strict";
-
-    var Parse = function(params) {
+    var BackEnd = function(params) {
         var self = this;
-        var $$ = Dom7;
         var defaults = {
             applicationId: "C7xD9l2BrBM4y8n4H2kMSHlipUTkKu4v5JeoWnLG",
-            restApiKey: "epEUYTX3LBpapTgTXF7xcBLZHB5wIaUCcZj0QMcp",
+            javascriptKey: "cqkluJZ5Cuwy2lkluihgjxfIWCQqceaNg5DxZgsK",
         };
         params = params || {};
         for (var def in defaults) {
@@ -15,54 +13,64 @@ Framework7.prototype.plugins.parse = function(app) {
             }
         }
         self.params = params;
-        $$.ajaxSetup({
-            headers: {
-                "X-Parse-Application-Id": self.params.applicationId,
-                "X-Parse-REST-API-Key": self.params.restApiKey
-            }
-        });
-        self.retrievePatients = function(params) {
-            return $$.ajax({
-                url: "https://api.parse.com/1/classes/Patient",
-                method: "GET",
+        Parse.initialize(self.params.applicationId, self.params.javascriptKey);
+        var Patient = Parse.Object.extend("Patient");
+
+        self.retrievePatients = function (params) {
+            new Parse.Query(Patient).find({
                 success: params.success,
-                dataType: "json"
+                error: params.error
             });
         };
-        self.getPatients = function() {
+
+        self.getPatients = function () {
             return JSON.parse(window.localStorage.getItem("Patients"));
         };
-        self.setPatients = function(patients) {
+
+        self.setPatients = function (patients) {
             window.localStorage.setItem("Patients", JSON.stringify(patients));
         };
+
         self.persistPatient = function (params) {
-            return $$.ajax({
-                url: "https://api.parse.com/1/classes/Patient",
-                method: "POST",
-                //contentType: "application/json",
-                data: JSON.stringify(params.data),
+            new Patient().save(params.data, {
                 success: params.success,
-                //dataType: "json"
+                error: params.error,
             });
         };
+
+        self.deletePatient = function (objectId, params) {
+            new Parse.Query(Patient).get(objectId, {
+                success: function(patient) {
+                    patient.destroy({
+                        success: params.success,
+                        error: params.error,
+                    });
+                },
+                error: function(object, error) {
+                    console.log(object, error);
+                }
+            });
+        };
+
         return self;
     };
 
-    app.parse = function() {
-        return new Parse();
+    app.backend = function() {
+        return new BackEnd();
     };
 
     return {
         hooks: {
             appInit: function() {
-                var parse = app.parse();
+                var backend = app.backend();
                 console.log("appInit");
-                app.showPreloader("Cargando Pacientes...");
-                parse.retrievePatients({
-                    success: function(data, textStatus) {
-                        app.hidePreloader();
-                        console.log(data, textStatus);
-                        parse.setPatients(data.results);
+                backend.retrievePatients({
+                    success: function(results) {
+                        console.log(results);
+                        backend.setPatients(results);
+                    },
+                    error: function(error) {
+                        console.log(error);
                     }
                 });
             },

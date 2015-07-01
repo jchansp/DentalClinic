@@ -25,13 +25,16 @@
         postdata.name = name;
         postdata.surname = surname;
 
-        var parse = myApp.parse();
+        var backend = myApp.backend();
         myApp.showPreloader("Creando Paciente...");
-        parse.persistPatient({
+        backend.persistPatient({
             data: postdata,
-            success: function (data, textStatus) {
+            success: function(patient) {
                 myApp.hidePreloader();
-                console.log(data, textStatus);
+                console.log(patient);
+            },
+            error: function(patient, error) {
+                console.log(patient, error);
             }
         });
     });
