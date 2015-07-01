@@ -3,7 +3,7 @@
         var items = [];
         myApp.parse().getPatients().forEach(function(patient) {
             items.push({
-                title: patient.firstName,
+                title: patient.name + " " + patient.surname,
                 subtitle: "",
             });
         });
@@ -17,8 +17,17 @@
                 }
                 return found;
             },
-            template: "<li>" + "<a href=\"#\" class=\"item-link item-content\">" + "<div class=\"item-inner\">" + "<div class=\"item-title-row\">" + "<div class=\"item-title\">{{title}}</div>" + "</div>" + "<div class=\"item-subtitle\">{{subtitle}}</div>" + "</div>" + "</a>" + "</li>",
-            height: 63,
+            template: "<li>" +
+                "<a href=\"#\" class=\"item-link item-content\">" +
+                "<div class=\"item-inner\">" +
+                "<div class=\"item-title-row\">" +
+                "<div class=\"item-title\">{{title}}</div>" +
+                "</div>" +
+                "<div class=\"item-subtitle\">{{subtitle}}</div>" +
+                "</div>" +
+                "</a>" +
+                "</li>",
+            //height: 63,
         });
     }
 
@@ -37,7 +46,7 @@
     //    var items = [];
     //    data.results.forEach(function(patient) {
     //        items.push({
-    //            title: patient.firstName,
+    //            title: patient.name,
     //            subtitle: "",
     //        });
     //    });

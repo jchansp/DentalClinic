@@ -42,7 +42,7 @@ myApp.getPatients = function() {
             var items = [];
             data.results.forEach(function(patient) {
                 items.push({
-                    title: patient.firstName,
+                    title: patient.name,
                     subtitle: "",
                 });
             });
