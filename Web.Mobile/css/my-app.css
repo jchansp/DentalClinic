@@ -1,21 +1,21 @@
 @font-face {
     font-family: 'Helvetica Neue';
-    src: local("Helvetica Neue Light"), local("HelveticaNeue-Light"), url("/fonts/HelveticaNeue-Light.ttf") format("truetype"), url("/fonts/HelveticaNeue-Light.woff") format("woff");
+    src: local("Helvetica Neue Light"), local("HelveticaNeue-Light"), url("../fonts/HelveticaNeue-Light.ttf") format("truetype"), url("../fonts/HelveticaNeue-Light.woff") format("woff");
     font-weight: 300;
 }
 @font-face {
     font-family: 'Helvetica Neue';
-    src: local("Helvetica Neue Medium"), local("HelveticaNeue-Medium"), url("/fonts/HelveticaNeue-Medium.ttf") format("truetype"), url("/fonts/HelveticaNeue-Medium.woff") format("woff");
+    src: local("Helvetica Neue Medium"), local("HelveticaNeue-Medium"), url("../fonts/HelveticaNeue-Medium.ttf") format("truetype"), url("../fonts/HelveticaNeue-Medium.woff") format("woff");
     font-weight: 500;
 }
 @font-face {
     font-family: 'Helvetica Neue XP';
-    src: url("/fonts/HelveticaNeue-Light.svg#HelveticaNeue-Light") format("svg"), url("/fonts/HelveticaNeue-Light.woff") format("woff");
+    src: url("../fonts/HelveticaNeue-Light.svg#HelveticaNeue-Light") format("svg"), url("../fonts/HelveticaNeue-Light.woff") format("woff");
     font-weight: 300;
 }
 @font-face {
     font-family: 'Helvetica Neue XP';
-    src: url("/fonts/HelveticaNeue-Medium.svg#HelveticaNeue-Medium") format("svg"), url("/fonts/HelveticaNeue-Medium.woff") format("woff");
+    src: url("../fonts/HelveticaNeue-Medium.svg#HelveticaNeue-Medium") format("svg"), url("../fonts/HelveticaNeue-Medium.woff") format("woff");
     font-weight: 500;
 }
 html {
