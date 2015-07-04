@@ -1,6 +1,6 @@
-Framework7.prototype.plugins.backend = function(app) {
+Framework7.prototype.plugins.server = function(app) {
     "use strict";
-    var BackEnd = function(params) {
+    var Server = function(params) {
         var self = this;
         var defaults = {
             applicationId: "C7xD9l2BrBM4y8n4H2kMSHlipUTkKu4v5JeoWnLG",
@@ -16,29 +16,29 @@ Framework7.prototype.plugins.backend = function(app) {
         Parse.initialize(self.params.applicationId, self.params.javascriptKey);
         var Patient = Parse.Object.extend("Patient");
 
-        self.retrievePatients = function (params) {
+        self.retrievePatients = function(params) {
             new Parse.Query(Patient).find({
                 success: params.success,
                 error: params.error
             });
         };
 
-        self.getPatients = function () {
+        self.getPatients = function() {
             return JSON.parse(window.localStorage.getItem("Patients"));
         };
 
-        self.setPatients = function (patients) {
+        self.setPatients = function(patients) {
             window.localStorage.setItem("Patients", JSON.stringify(patients));
         };
 
-        self.persistPatient = function (params) {
+        self.persistPatient = function(params) {
             new Patient().save(params.data, {
                 success: params.success,
                 error: params.error,
             });
         };
 
-        self.deletePatient = function (objectId, params) {
+        self.deletePatient = function(objectId, params) {
             new Parse.Query(Patient).get(objectId, {
                 success: function(patient) {
                     patient.destroy({
@@ -55,19 +55,19 @@ Framework7.prototype.plugins.backend = function(app) {
         return self;
     };
 
-    app.backend = function() {
-        return new BackEnd();
+    app.server = function() {
+        return new Server();
     };
 
     return {
         hooks: {
             appInit: function() {
-                var backend = app.backend();
+                var server = app.server();
                 console.log("appInit");
-                backend.retrievePatients({
+                server.retrievePatients({
                     success: function(results) {
                         console.log(results);
-                        backend.setPatients(results);
+                        server.setPatients(results);
                     },
                     error: function(error) {
                         console.log(error);

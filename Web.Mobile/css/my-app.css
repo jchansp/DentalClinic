@@ -1,46 +1,70 @@
 @font-face {
     font-family: 'Helvetica Neue';
-    src: local("Helvetica Neue Light"), local("HelveticaNeue-Light"), url("../fonts/HelveticaNeue-Light.ttf") format("truetype"), url("../fonts/HelveticaNeue-Light.woff") format("woff");
     font-weight: 300;
+    src: local("Helvetica Neue Light"), local("HelveticaNeue-Light"), url("../fonts/HelveticaNeue-Light.ttf") format("truetype"), url("../fonts/HelveticaNeue-Light.woff") format("woff");
 }
+
 @font-face {
     font-family: 'Helvetica Neue';
+    font-weight: 500;
     src: local("Helvetica Neue Medium"), local("HelveticaNeue-Medium"), url("../fonts/HelveticaNeue-Medium.ttf") format("truetype"), url("../fonts/HelveticaNeue-Medium.woff") format("woff");
-    font-weight: 500;
 }
+
 @font-face {
     font-family: 'Helvetica Neue XP';
-    src: url("../fonts/HelveticaNeue-Light.svg#HelveticaNeue-Light") format("svg"), url("../fonts/HelveticaNeue-Light.woff") format("woff");
     font-weight: 300;
+    src: url("../fonts/HelveticaNeue-Light.svg#HelveticaNeue-Light") format("svg"), url("../fonts/HelveticaNeue-Light.woff") format("woff");
 }
+
 @font-face {
     font-family: 'Helvetica Neue XP';
-    src: url("../fonts/HelveticaNeue-Medium.svg#HelveticaNeue-Medium") format("svg"), url("../fonts/HelveticaNeue-Medium.woff") format("woff");
     font-weight: 500;
+    src: url("../fonts/HelveticaNeue-Medium.svg#HelveticaNeue-Medium") format("svg"), url("../fonts/HelveticaNeue-Medium.woff") format("woff");
 }
-html {
-    -ms-content-zooming: none;
-}
+
+html { -ms-content-zooming: none; }
+
 body {
-    margin: 0px;
-    padding: 0px;
+    -ms-content-zooming: none;
     -webkit-font-smoothing: antialiased;
     font-family: "Helvetica Neue", sans-serif;
-    font-weight: 300;
     font-size: 15px;
+    font-weight: 300;
     line-height: 1.2;
-    -ms-content-zooming: none;
+    margin: 0;
+    padding: 0;
 }
+
 body textarea,
-body input {
-    font-family: "Helvetica Neue", sans-serif;
-}
+body input { font-family: "Helvetica Neue", sans-serif; }
+
 b,
 strong,
-.font-medium {
-    font-weight: 500;
-}
+.font-medium { font-weight: 500; }
+
 .subtitle {
     font-size: 60%;
     vertical-align: middle;
+}
+
+.circle {
+    -ms-border-radius: 50%;
+    background-color: lightgrey;
+    border-radius: 50%;
+    color: white;
+    height: 40px;
+    margin: 5px 0;
+    padding: 0;
+    width: 40px;
+}
+
+.circle-inner {
+    -ms-border-radius: inherit;
+    border-radius: inherit;
+    margin: 1px auto 0;
+}
+
+.circle-inner img {
+    -ms-border-radius: inherit;
+    border-radius: inherit;
 }

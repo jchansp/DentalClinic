@@ -1,22 +1,24 @@
 ﻿myApp.onPageInit("patients", function(page) {
 
-    var virtualList;
-    var backend = myApp.backend();
+    var virtualList = null;
+    var server = myApp.server();
 
     function patientsToItems(patients) {
         var items = [];
         patients.forEach(function(patient) {
             items.push({
                 id: patient.objectId,
-                title: patient.name + " " + patient.surname,
-                subtitle: "",
+                icon: patient.photo ? "<img src=\"" + patient.photo.url + "\" />" : patient.name.charAt(0) + patient.surname.charAt(0),
+                name: patient.name,
+                surname: patient.surname,
+                subtitle: patient.phone || "(Sin teléfono)",
             });
         });
         return items;
     }
 
     virtualList = myApp.virtualList($$(page.container).find(".virtual-list"), {
-        items: patientsToItems(backend.getPatients()),
+        items: patientsToItems(server.getPatients()),
         searchAll: function(query, items) {
             var found = [];
             for (var i = 0; i < items.length; i++) {
@@ -27,9 +29,14 @@
         },
         template: "<li class=\"swipeout\" data-id=\"{{id}}\">" +
             "  <div class=\"swipeout-content item-content\">" +
-            "    <div class=\"item-media\">...</div>" +
+            "    <div class=\"item-media circle\">" +
+            "      <div class=\"circle-inner\">{{icon}}</div>" +
+            "    </div>" +
             "    <div class=\"item-inner\">" +
-            "      <div class=\"item-title\">{{title}}</div>" +
+            //"      <div class=\"item-title\">" +
+            "        {{name}}" +
+            "        <strong>{{surname}}</strong>" +
+            //"      </div>" +
             "      <div class=\"item-subtitle\">{{subtitle}}</div>" +
             "    </div>" +
             "  </div>" +
@@ -38,12 +45,12 @@
             "    </div>" +
             "  </div>" +
             "</li>",
-        //height: 63,
-        cache: false,
+        height: 57,
+        //cache: false,
     });
 
     function deleted(e) {
-        backend.deletePatient($$(e.srcElement).attr("data-id"), {
+        server.deletePatient($$(e.srcElement).attr("data-id"), {
             success: function(patient) {
                 myApp.alert(patient.attributes.name + " " + patient.attributes.surname + " borrado correctamente");
             },
@@ -54,11 +61,11 @@
     }
 
     $$(page.container).find(".pull-to-refresh-content").on("refresh", function(e) {
-        backend.retrievePatients({
+        server.retrievePatients({
             success: function(results) {
                 console.log(results);
-                backend.setPatients(results);
-                virtualList.replaceAllItems(patientsToItems(backend.getPatients()));
+                server.setPatients(results);
+                virtualList.replaceAllItems(patientsToItems(server.getPatients()));
                 virtualList.update();
                 myApp.pullToRefreshDone();
                 $$(page.container).find(".swipeout").on("deleted", deleted);
