@@ -1,5 +1,6 @@
-﻿myApp.onPageInit("patients", function(page) {
-
+﻿$$("#patients").on("show", function() {
+    //myApp.onPageInit("patients", function(page) {
+    var pageContainer = $$("#patients .page");
     var virtualList = null;
     var server = myApp.server();
 
@@ -8,7 +9,9 @@
         patients.forEach(function(patient) {
             items.push({
                 id: patient.objectId,
-                icon: patient.photo ? "<img src=\"" + patient.photo.url + "\" />" : patient.name.charAt(0) + patient.surname.charAt(0),
+                icon: patient.photo ?
+                    "<img src=\"" + patient.photo.url + "\" />" :
+                    "<div class=\"circle-inner\">" + patient.name.charAt(0) + patient.surname.charAt(0) + "</div>",
                 name: patient.name,
                 surname: patient.surname,
                 subtitle: patient.phone || "(Sin teléfono)",
@@ -17,7 +20,7 @@
         return items;
     }
 
-    virtualList = myApp.virtualList($$(page.container).find(".virtual-list"), {
+    virtualList = myApp.virtualList(pageContainer.find(".virtual-list"), {
         items: patientsToItems(server.getPatients()),
         searchAll: function(query, items) {
             var found = [];
@@ -30,7 +33,7 @@
         template: "<li class=\"swipeout\" data-id=\"{{id}}\">" +
             "  <div class=\"swipeout-content item-content\">" +
             "    <div class=\"item-media circle\">" +
-            "      <div class=\"circle-inner\">{{icon}}</div>" +
+            "      {{icon}}" +
             "    </div>" +
             "    <div class=\"item-inner\">" +
             //"      <div class=\"item-title\">" +
@@ -60,7 +63,7 @@
         });
     }
 
-    $$(page.container).find(".pull-to-refresh-content").on("refresh", function(e) {
+    pageContainer.find(".pull-to-refresh-content").on("refresh", function(e) {
         server.retrievePatients({
             success: function(results) {
                 console.log(results);
@@ -68,7 +71,7 @@
                 virtualList.replaceAllItems(patientsToItems(server.getPatients()));
                 virtualList.update();
                 myApp.pullToRefreshDone();
-                $$(page.container).find(".swipeout").on("deleted", deleted);
+                pageContainer.find(".swipeout").on("deleted", deleted);
             },
             error: function(error) {
                 console.log(error);
@@ -76,7 +79,9 @@
         });
     });
 
-    $$(page.container).find(".swipeout").on("deleted", function(e) {
+    pageContainer.find(".swipeout").on("deleted", function(e) {
         deleted(e);
     });
+
+    $$(".searchbar-cancel").css("margin-right", "-65px");
 });

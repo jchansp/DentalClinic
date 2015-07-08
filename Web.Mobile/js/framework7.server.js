@@ -1,5 +1,8 @@
 Framework7.prototype.plugins.server = function(app) {
     "use strict";
+
+    var $$ = Dom7;
+
     var Server = function(params) {
         var self = this;
         var defaults = {
