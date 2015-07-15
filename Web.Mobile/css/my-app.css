@@ -120,29 +120,54 @@ i.present {
 }
 
 body {
-background: #074d55; 
-background: -moz-radial-gradient(center, ellipse cover, #a7cfdf 0%, #23538a 100%); /* FF3.6+ */
-background: -webkit-gradient(radial, right bottom, 0px, left top, 100%, color-stop(0%,#6967a5), color-stop(50%,#2075a1), color-stop(100%,#074d55));
-background: -webkit-radial-gradient(right bottom, ellipse cover, #6967a5 0%, #2075a1 50%, #074d55 100%);
-background: radial-gradient(ellipse at right bottom, #6967a5 0%, #2075a1 50%, #074d55 100%);
-        
+    background: #074d55;
+    background: -moz-radial-gradient(center, ellipse cover, #a7cfdf 0%, #23538a 100%); /* FF3.6+ */
+    background: -webkit-gradient(radial, right bottom, 0px, left top, 100%, color-stop(0%, #6967a5), color-stop(50%, #2075a1), color-stop(100%, #074d55));
+    background: -webkit-radial-gradient(right bottom, ellipse cover, #6967a5 0%, #2075a1 50%, #074d55 100%);
+    background: radial-gradient(ellipse at right bottom, #6967a5 0%, #2075a1 50%, #074d55 100%);
 }
-.panel .page, .panel .pages, .panel {
-background: none;
-}
+
+.panel .page, .panel .pages, .panel { background: none; }
+
 .panel .list-block ul {
-background: none;
-border:none;
+    background: none;
+    border: none;
 }
-.panel .list-block .item-link {
-color:#fff;
+
+.panel .list-block .item-link { color: #fff; }
+
+.panel .list-block .item-link:active { background: rgba(255, 255, 255, 0.2); }
+
+.panel .list-block .item-inner { border-bottom-color: rgba(255, 255, 255, 0.2); }
+
+.panel .content-block, .panel .content-block-title { color: #fff; }
+
+.contacts-block ul { border: none; }
+
+.contacts-block .item-media {
+    padding-bottom: 8px !important;
+    padding-top: 7px !important;
 }
-.panel .list-block .item-link:active {
-background: rgba(255,255,255,0.2);
+
+.contacts-block .item-media img {
+    -ms-border-radius: 24px;
+    border-radius: 24px;
+    height: 48px;
+    width: 48px;
 }
-.panel .list-block .item-inner {
-border-bottom-color:rgba(255,255,255,0.2);
+
+.contacts-block .item-media div {
+    -ms-border-radius: 24px;
+    background-color: lightgrey;
+    border-radius: 24px;
+    color: white;
+    height: 48px;
+    line-height: 48px;
+    text-align: center;
+    width: 48px;
 }
-.panel .content-block, .panel .content-block-title {
-color:#fff;
+
+.contacts-block .item-subtitle {
+    color: #777777;
+    font-size: 13px;
 }

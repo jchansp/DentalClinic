@@ -1,8 +1,6 @@
 Framework7.prototype.plugins.server = function(app) {
     "use strict";
 
-    var $$ = Dom7;
-
     var Server = function(params) {
         var self = this;
         var defaults = {
@@ -20,7 +18,7 @@ Framework7.prototype.plugins.server = function(app) {
         var Patient = Parse.Object.extend("Patient");
 
         self.retrievePatients = function(params) {
-            new Parse.Query(Patient).find({
+            new Parse.Query(Patient).ascending("name").find({
                 success: params.success,
                 error: params.error
             });
